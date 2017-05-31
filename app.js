@@ -10,7 +10,7 @@ var app =express();
 
 app.get('/', function(req, res){
 //res.sendFile(__dirname + '/public/index.html');
-res.send('Hi');
+res.send('Hi2');
 console.log('page loaded');
 });
 
