@@ -5,6 +5,7 @@ var naytot = JSON.parse(data);
 
 var express = require('express');
 var app =express();
+
 //app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res){
@@ -51,4 +52,40 @@ function addInfo(request , response){
 
 	response.send(reply);
 	}
+
+app.get('/beacon/:major', openSite);
+
+function openSite(request, response){
+	console.log('openSite');
+	var data = request.params;
+	var key = data.major;
+
+	var ryhmaTunnus = getValues(naytot,key);
+	console.log(ryhmaTunnus);
+
+
+	if (ryhmaTunnus !== null) {
+		response.send(ryhmaTunnus);
+
+
+	}else{
+		response.send("default");
+	}
+
+	function getValues(obj, key) {
+    var objects = [];
+    for (var i in obj) {
+        if (!obj.hasOwnProperty(i)) continue;
+        if (typeof obj[i] == 'object') {
+            objects = objects.concat(getValues(obj[i], key));
+        } else if (i == key) {
+            objects.push(obj[i]);
+        }
+    }
+    return objects;
+}
+
+	
+}
+
 }
