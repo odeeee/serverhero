@@ -12,7 +12,7 @@
   </head>
   <body onload="JavaScript:timedRefresh(10000);">
   </body>
-    
+      
 <div>
   <div
   style="
@@ -70,12 +70,13 @@
     border: 1px solid red;
   overflow:  hidden;">
 	<iframe
+	id="weather"
 	style="
 	width: 840px;
 	height: 1325px;
 	margin-top: -600px; 
 	margin-left: -190px;"
-	src="http://www.foreca.fi/Finland/Oulu"
+	src=""
 	width="500"
 	height="1000"
 	scrolling="no">
@@ -83,8 +84,14 @@
   </div>
 </div>
 
-<div style="float="right;">
-<form onsubmit="window.location = 'http://domain.ca/blog/search/' + search.value; return false;">
+<script>
+	var kemi = "Kemi";
+    document.getElementById("weather").src =
+              "http://www.foreca.fi/Finland/" + kemi;
+</script>
+
+<div style="float: right;">
+<form onsubmit="window.location = 'http://www.foreca.fi/Finland/' + search.value; return false;">
 <input id="search" placeholder="Search" type="search" name="search"></input>
 <input type="submit" value="Send">
 </form>
