@@ -1,12 +1,92 @@
 <!doctype html>
 <html>
   <head>
-    <title>SocketHero</title>
+  <script type="text/JavaScript">
+		function timedRefresh(timeoutPeriod) {
+			setTimeout("location.reload(true);",timeoutPeriod);
+		}
+	</script>
+    <title>iFrame testing</title>
     <style>
     </style>
   </head>
-  <body> 
-	<h1>Welcome</h1>
-	<p> </p>
+  <body onload="JavaScript:timedRefresh(10000);">
   </body>
+    
+<div>
+  <div
+  style="
+  position:absolute;
+    top:0px;
+    left:0px;
+    height:735px;
+    width:660px;
+    border: 1px solid red;
+  overflow:  hidden;">
+	<iframe
+	style="
+	width: 1920px;
+	height: 1360px;
+	margin-top: -660px; 
+	margin-left: -385px;"
+	src="http://www.amica.fi/ravintolat/ravintolat-kaupungeittain/oulu/kotkanpoika/"
+	width="1920"
+	height="1080"
+	scrolling="no">
+	</iframe>
+  </div>
+</div>
+
+<div>
+  <div
+  style="
+	height:735px;
+    width:565px;
+    border: 1px solid red;
+    margin:0px auto;
+  overflow:  hidden;">
+	<iframe
+	style="
+	width: 840px;
+	height: 1325px;
+	margin-top: -600px; 
+	margin-left: -190px;"
+	src="http://www.foreca.fi/Finland/Oulu"
+	width="500"
+	height="1000"
+	scrolling="no">
+	</iframe>
+  </div>
+</div>
+
+<div>
+  <div
+  style="
+  position:absolute;
+    top:0px;
+    right:0px;
+    height:735px;
+    width:660px;
+    border: 1px solid red;
+  overflow:  hidden;">
+	<iframe
+	style="
+	width: 840px;
+	height: 1325px;
+	margin-top: -600px; 
+	margin-left: -190px;"
+	src="http://www.foreca.fi/Finland/Oulu"
+	width="500"
+	height="1000"
+	scrolling="no">
+	</iframe>
+  </div>
+</div>
+
+<div style="float="right;">
+<form onsubmit="window.location = 'http://domain.ca/blog/search/' + search.value; return false;">
+<input id="search" placeholder="Search" type="search" name="search"></input>
+<input type="submit" value="Send">
+</form>
+</div>
 </html>

@@ -6,11 +6,11 @@ var naytot = JSON.parse(data);
 var express = require('express');
 var app =express();
 
-//app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res){
-//res.sendFile(__dirname + '/public/index.html');
-res.send('Hi2');
+res.sendFile(__dirname + '/public/default.html');
+res.send('Hi');
 console.log('page loaded');
 });
 
@@ -63,10 +63,10 @@ function openSite(request , response){
 	console.log(ryhmaTunnus);
 
 
-	if (ryhmaTunnus != null) {
-		response.send(ryhmaTunnus);
+	if (ryhmaTunnus != "null") {
+		response.sendFile(__dirname + '/public/index.html');
 	}else{
-		response.send("default");
+		response.sendFile(__dirname + '/public/default.html');
 	}
 
 	function getValues(obj, key) {
