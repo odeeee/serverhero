@@ -44,7 +44,6 @@ function addInfo(request , response){
 		console.log('all set');
 	
 	var reply = {
-
 		beacon: beacon,
 		ryhma: ryhma,
 		status:"all done"
@@ -55,7 +54,7 @@ function addInfo(request , response){
 
 app.get('/beacon/:major', openSite);
 
-function openSite(request, response){
+function openSite(request , response){
 	console.log('openSite');
 	var data = request.params;
 	var key = data.major;
@@ -64,10 +63,8 @@ function openSite(request, response){
 	console.log(ryhmaTunnus);
 
 
-	if (ryhmaTunnus !== null) {
+	if (ryhmaTunnus != null) {
 		response.send(ryhmaTunnus);
-
-
 	}else{
 		response.send("default");
 	}
@@ -83,9 +80,7 @@ function openSite(request, response){
         }
     }
     return objects;
-}
-
+	}
 	
 }
-
 }
