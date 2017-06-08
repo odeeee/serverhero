@@ -37,15 +37,17 @@ connection.connect(function(err) {
     return;
   }else{
    console.log('Connection established');
+   databTulostus();
 	}
 });
-
+function databTulostus(){
 connection.query('SELECT * from ostable', function(err, rows, fields) {
   if (!err)
     console.log('The solution is: ', rows);
   else
     console.log('Error while performing Query. ');
 });
+}
 
 //connection.end();
 
@@ -68,11 +70,30 @@ function addInfo(request , response){
 
 	naytot[beacon] = ryhma;
 
-	var post  = {Major: beacon, Ryhma: ryhma, Saa: saa,Viesti:" " };
+	var viesti = " ";
 
+	connection.query('SELECT Viesti FROM ostable Where Major = ?', [beacon] , function (err, fields) {
+    if (err) {
+    	throw err;
+    }else{
+    	console.log("Viesti haettu " + fields);
+    	setViesti(fields);
+	}
+  	});
+
+  	function setViesti(fields) {
+  	viesti = fields;
+  	console.log("viesti: " + viesti);
+  	updateDb();
+	}
+
+	var post  = {Major: beacon, Ryhma: ryhma, Saa: saa,Viesti: viesti };
+
+	function updateDb(){
   	connection.query('UPDATE ostable SET ? Where Major = ?', [post , beacon] , function (err, result) {
     if (err) throw err;
     console.log("1 record inserted");
+    databTulostus();
   	});
 
 	var tieto = JSON.stringify(naytot , null ,2);
@@ -90,6 +111,7 @@ function addInfo(request , response){
 
 	response.send(reply);
 	}
+}
 }
 
 app.get('/add/2/:beacon/:ryhma/:saa/:viesti', addInfoV);
@@ -110,6 +132,7 @@ function addInfoV(request , response){
   	connection.query('UPDATE ostable SET ? Where Major = ?', [post , beacon] , function (err, result) {
     if (err) throw err;
     console.log("1 record inserted");
+    databTulostus();
   	});
 
 	var tieto = JSON.stringify(naytot , null ,2);
@@ -122,6 +145,7 @@ function addInfoV(request , response){
 		beacon: beacon,
 		ryhma: ryhma,
 		saa: saa,
+		viesti: viesti,
 		status:"all done"
 	}
 
