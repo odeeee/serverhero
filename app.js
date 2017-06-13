@@ -40,6 +40,12 @@ connection.connect(function(err) {
    databTulostus();
 	}
 });
+
+//Yllä pitää yhteyttä
+setInterval(function () {
+    connection.query('SELECT 1');
+}, 5000);
+
 function databTulostus(){
 connection.query('SELECT * from ostable', function(err, rows, fields) {
   if (!err)
@@ -48,7 +54,6 @@ connection.query('SELECT * from ostable', function(err, rows, fields) {
     console.log('Error while performing Query. ');
 });
 }
-
 //connection.end();
 
 app.get('/info', sendStuff);
@@ -72,24 +77,23 @@ function addInfo(request , response){
 
 	var viesti = " ";
 
-	connection.query('SELECT Viesti FROM ostable Where Major = ?', [beacon] , function (err, fields) {
+	connection.query('SELECT Viesti FROM ostable Where Major = ?', [beacon] , function (err, result) {
     if (err) {
     	throw err;
     }else{
-    	console.log("Viesti haettu " + fields);
-    	setViesti(fields);
+    	console.log("Viesti haettu " + result[0].Viesti);
+    	setViesti(result);
 	}
   	});
 
-  	function setViesti(fields) {
-  	viesti = fields;
+  	function setViesti(result) {
+  	viesti = result[0].Viesti;
   	console.log("viesti: " + viesti);
   	updateDb();
 	}
 
-	var post  = {Major: beacon, Ryhma: ryhma, Saa: saa,Viesti: viesti };
-
 	function updateDb(){
+	var post  = {Major: beacon, Ryhma: ryhma, Saa: saa,Viesti: viesti };
   	connection.query('UPDATE ostable SET ? Where Major = ?', [post , beacon] , function (err, result) {
     if (err) throw err;
     console.log("1 record inserted");
@@ -108,7 +112,6 @@ function addInfo(request , response){
 		saa: saa,
 		status:"all done"
 	}
-
 	response.send(reply);
 	}
 }
@@ -162,7 +165,6 @@ function openSite(request , response){
 
 	var ryhmaTunnus = getValues(naytot,key);
 	console.log(ryhmaTunnus);
-
 
 	if (ryhmaTunnus != "null") {
 		response.sendFile(__dirname + '/public/index.html');
