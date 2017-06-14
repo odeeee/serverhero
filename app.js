@@ -1,3 +1,7 @@
+//postresql
+//heroku.com/postgres
+//heroku.com/pricing 
+
 var fs = require('fs');
 var mysql = require('mysql');
 
@@ -30,6 +34,19 @@ var connection = mysql.createConnection({
   database : 'ovensausage'
 });
 
+/*
+    var sql = "CREATE TABLE vstable2 (Ryhma VARCHAR(255) PRIMARY KEY, Viesti TEXT)";
+  	connection.query(sql, function (err, result) {
+    if (err) throw err;
+    console.log("Table created");
+
+    var sql = "INSERT INTO vstable2 (Ryhma, Viesti) VALUES ('TVT15SPO', 'default')";
+  	connection.query(sql, function (err, result) {
+    if (err) throw err;
+    console.log("1 record inserted");
+  });
+  	}); 
+*/
 connection.connect(function(err) {
   if(err){
     console.log('Error connecting to Db ' + err.stack);
@@ -47,9 +64,16 @@ setInterval(function () {
 }, 5000);
 
 function databTulostus(){
-connection.query('SELECT * from ostable', function(err, rows, fields) {
+connection.query('SELECT * from vstable2', function(err, rows, fields) {
   if (!err)
     console.log('The solution is: ', rows);
+  else
+    console.log('Error while performing Query. ');
+});
+
+connection.query('SELECT * from ostable', function(err, rows, fields) {
+  if (!err)
+    console.log('\n\n\nThe solution is: ', rows);
   else
     console.log('Error while performing Query. ');
 });
@@ -129,6 +153,14 @@ function addInfoV(request , response){
 	var viesti = data.viesti;
 
 	naytot[beacon] = ryhma;
+
+	var ryhm = {Ryhma: ryhma};
+	var viest  = {Ryhma: ryhma ,Viesti: viesti};
+
+	connection.query('INSERT INTO vstable2 SET ? ON DUPLICATE KEY UPDATE Viesti = ? ', [viest, viesti] , function (err, result) {
+    if (err) throw err;
+    console.log("viesti record inserted");
+  	});
 
 	var post  = {Major: beacon, Ryhma: ryhma, Saa: saa,Viesti: viesti};
 
