@@ -11,7 +11,15 @@ var naytot = JSON.parse(data);
 var express = require('express');
 var app =express();
 
-app.use(express.static(__dirname + '/public'));
+//app.use(express.static(__dirname + '/public'));
+
+var path = require('path'); //Use the path to tell where find the .ejs files
+// view engine setup
+app.set('views', path.join(__dirname, '/views')); // here the .ejs files is in views folders
+app.set('view engine', 'ejs'); //tell the template engine
+
+//var router = express.Router();
+
 
 app.get('/', function(req, res){
 res.sendFile(__dirname + '/public/default.html');
@@ -194,26 +202,72 @@ function openSite(request , response){
 	console.log('openSite');
 	var data = request.params;
 	var key = data.major;
+	var saa = " ";
+	var ryhma = "null";
+	var viesti = " ";
 
-	var ryhmaTunnus = getValues(naytot,key);
-	console.log(ryhmaTunnus);
+	//var ryhmaTunnus = getValues(naytot,key);
+	//console.log(ryhmaTunnus);
+	
+	connection.query('SELECT * FROM ostable Where Major = ?', [key] , function (err, result) {
+    	if (err) {
+    		throw err;
+    	}else{
+    		console.log("Data haettu " + result[0]);
+    		seTup(result);
+		}
+  	});
+	
+  	function seTup(result){
+  		saa = result[0].Saa;
+  		ryhma = result[0].Ryhma;
+  		console.log("Saa , Ryhma: " + saa + " " + ryhma);
+  		haeViesti(ryhma);
+  	}
 
-	if (ryhmaTunnus != "null") {
-		response.sendFile(__dirname + '/public/index.html');
+  	function haeViesti(ryhma){
+  		console.log(ryhma)
+  		connection.query('SELECT * FROM ostable Where Ryhma = ?', [ryhma] , function (err, result) {
+    		if (err) {
+    			throw err;
+    		}else{
+    			console.log("Viesti haettu " + result[0].Viesti);
+    			seTupViesti(result);
+			}
+  		});	
+  	}
+
+  	function seTupViesti(result){
+  		viesti = result[0].Viesti;
+  		console.log("viesti: " + viesti);
+  		vastaa();
+  	}
+
+  	function vastaa(){
+	if (ryhma != "null") {
+		//response.sendFile(__dirname + '/public/default.html');
+		response.render("index", { 
+			ryhma: ryhma,
+			saa: saa,
+			viesti: viesti});
+		console.log("Vastattu");
+		
 	}else{
+		console.log("ryhma null");
 		response.sendFile(__dirname + '/public/default.html');
+	}
 	}
 
 	function getValues(obj, key) {
-    var objects = [];
-    for (var i in obj) {
-        if (!obj.hasOwnProperty(i)) continue;
-        if (typeof obj[i] == 'object') {
-            objects = objects.concat(getValues(obj[i], key));
-        } else if (i == key) {
-            objects.push(obj[i]);
-        }
-    }
+    	var objects = [];
+    	for (var i in obj) {
+        	if (!obj.hasOwnProperty(i)) continue;
+        	if (typeof obj[i] == 'object') {
+            	objects = objects.concat(getValues(obj[i], key));
+        	} else if (i == key) {
+            	objects.push(obj[i]);
+        	}
+    	}
     return objects;
 	}
 	
