@@ -24,6 +24,7 @@ var port = process.env.PORT || 8000;
 
 app.listen(port , function(){
 	console.log('Server listening');
+  connDb();
 });
 
 var connection = mysql.createConnection({
@@ -35,7 +36,6 @@ var connection = mysql.createConnection({
   database : 'ovensausage'
 });
 
-console.log('Connecting to database...');
 
 /*
     var sql = "CREATE TABLE vstable2 (Ryhma VARCHAR(255) PRIMARY KEY, Viesti TEXT)";
@@ -50,6 +50,8 @@ console.log('Connecting to database...');
   });
   	}); 
 */
+function connDb(){
+console.log('Connecting to database...');
 connection.connect(function(err) {
   if(err){
     console.log('Error connecting to Db ' + err.stack);
@@ -59,6 +61,7 @@ connection.connect(function(err) {
    	databTulostus();
   }
 });
+}
 
 //Yllä pitää yhteyttä
 setInterval(function () {
@@ -68,16 +71,14 @@ setInterval(function () {
 function databTulostus(){
 	connection.query('SELECT * from vstable2', function(err, rows, fields) {
   		if (!err)
-        Console.log('vstable2: ');
-    		console.log('The solution is: ', rows);
+    		console.log('vstable2:  \nThe solution is: ', rows);
   		else
     		console.log('Error while performing Query. ');
 	});
 
 	connection.query('SELECT * from ostable', function(err, rows, fields) {
   		if (!err)
-        console.log('\n\nostable: ');
-    		console.log('The solution is: ', rows);
+    		console.log('\n\nostable: \nThe solution is: ', rows);
   		else
     		console.log('Error while performing Query. ');
 	});
