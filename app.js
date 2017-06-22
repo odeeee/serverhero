@@ -1,7 +1,3 @@
-//postresql
-//heroku.com/postgres
-//heroku.com/pricing 
-
 var fs = require('fs');
 var mysql = require('mysql');
 
@@ -10,27 +6,24 @@ var naytot = JSON.parse(data);
 
 var express = require('express');
 var app =express();
-
 //app.use(express.static(__dirname + '/public'));
 
 var path = require('path'); //Use the path to tell where find the .ejs files
 // view engine setup
 app.set('views', path.join(__dirname, '/views')); // here the .ejs files is in views folders
 app.set('view engine', 'ejs'); //tell the template engine
-
 //var router = express.Router();
 
-
 app.get('/', function(req, res){
-res.sendFile(__dirname + '/public/default.html');
-res.send('Hi');
-console.log('page loaded');
+	res.sendFile(__dirname + '/public/default.html');
+	res.send('Hi');
+	console.log('page loaded');
 });
 
 var port = process.env.PORT || 8000;
 
 app.listen(port , function(){
-	console.log('server listening');
+	console.log('Server listening');
 });
 
 var connection = mysql.createConnection({
@@ -41,6 +34,8 @@ var connection = mysql.createConnection({
   password : 'orava1337',
   database : 'ovensausage'
 });
+
+console.log('Connecting to database...');
 
 /*
     var sql = "CREATE TABLE vstable2 (Ryhma VARCHAR(255) PRIMARY KEY, Viesti TEXT)";
@@ -58,33 +53,34 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
   if(err){
     console.log('Error connecting to Db ' + err.stack);
-
     return;
   }else{
-   console.log('Connection established');
-   databTulostus();
-	}
+   	console.log('Connection established');
+   	databTulostus();
+  }
 });
 
 //Yllä pitää yhteyttä
 setInterval(function () {
     connection.query('SELECT 1');
-}, 5000);
+	}, 5000);
 
 function databTulostus(){
-connection.query('SELECT * from vstable2', function(err, rows, fields) {
-  if (!err)
-    console.log('The solution is: ', rows);
-  else
-    console.log('Error while performing Query. ');
-});
+	connection.query('SELECT * from vstable2', function(err, rows, fields) {
+  		if (!err)
+        Console.log('vstable2: ');
+    		console.log('The solution is: ', rows);
+  		else
+    		console.log('Error while performing Query. ');
+	});
 
-connection.query('SELECT * from ostable', function(err, rows, fields) {
-  if (!err)
-    console.log('\n\n\nThe solution is: ', rows);
-  else
-    console.log('Error while performing Query. ');
-});
+	connection.query('SELECT * from ostable', function(err, rows, fields) {
+  		if (!err)
+        console.log('\n\nostable: ');
+    		console.log('The solution is: ', rows);
+  		else
+    		console.log('Error while performing Query. ');
+	});
 }
 //connection.end();
 
@@ -98,18 +94,16 @@ function sendStuff(request , response) {
 app.get('/add/1/:beacon/:ryhma/:saa', addInfo);
 
 function addInfo(request , response){
-		console.log('addInfo')
+	console.log('addInfo')
 	var data = request.params;
 	var beacon1 = data.beacon;
 	var beacon = beacon1.toString();
 	var ryhma = data.ryhma;
 	var saa = data.saa;
-
 	naytot[beacon] = ryhma;
-
 	var viesti = " ";
 
-	connection.query('SELECT Viesti FROM ostable Where Major = ?', [beacon] , function (err, result) {
+	connection.query('SELECT Viesti FROM vstable2 Where Ryhma = ?', [ryhma] , function (err, result) {
     if (err) {
     	throw err;
     }else{
@@ -119,17 +113,17 @@ function addInfo(request , response){
   	});
 
   	function setViesti(result) {
-  	viesti = result[0].Viesti;
-  	console.log("viesti: " + viesti);
-  	updateDb();
+  		viesti = result[0].Viesti;
+  		console.log("viesti: " + viesti);
+  		updateDb();
 	}
 
 	function updateDb(){
-	var post  = {Major: beacon, Ryhma: ryhma, Saa: saa,Viesti: viesti };
-  	connection.query('UPDATE ostable SET ? Where Major = ?', [post , beacon] , function (err, result) {
-    if (err) throw err;
-    console.log("1 record inserted");
-    databTulostus();
+		var post  = {Major: beacon, Ryhma: ryhma, Saa: saa,Viesti: viesti };
+  		connection.query('UPDATE ostable SET ? Where Major = ?', [post , beacon] , function (err, result) {
+    	if (err) throw err;
+    	console.log("1 record inserted");
+    	databTulostus();
   	});
 
 	var tieto = JSON.stringify(naytot , null ,2);
@@ -166,16 +160,16 @@ function addInfoV(request , response){
 	var viest  = {Ryhma: ryhma ,Viesti: viesti};
 
 	connection.query('INSERT INTO vstable2 SET ? ON DUPLICATE KEY UPDATE Viesti = ? ', [viest, viesti] , function (err, result) {
-    if (err) throw err;
-    console.log("viesti record inserted");
+    	if (err) throw err;
+    	console.log("viesti record inserted");
   	});
 
 	var post  = {Major: beacon, Ryhma: ryhma, Saa: saa,Viesti: viesti};
 
   	connection.query('UPDATE ostable SET ? Where Major = ?', [post , beacon] , function (err, result) {
-    if (err) throw err;
-    console.log("1 record inserted");
-    databTulostus();
+    	if (err) throw err;
+    	console.log("1 record inserted");
+    	databTulostus();
   	});
 
 	var tieto = JSON.stringify(naytot , null ,2);
@@ -195,6 +189,34 @@ function addInfoV(request , response){
 	response.send(reply);
 	}
 }
+
+app.get('/viesti/:ryhma/:msg/:user', tallennaViesti);
+
+function tallennaViesti(request , response){
+  console.log('tallennaViesti');
+  var data = request.params;
+  var ryhma = data.ryhma;
+  var msg = data.msg;
+  var user = data.user;
+
+  var viest  = {Ryhma: ryhma ,Viesti: viesti};
+
+  connection.query('INSERT INTO vstable2 SET ? ON DUPLICATE KEY UPDATE Viesti = ? ', [viest, viesti] , function (err, result) {
+      if (err) throw err;
+      console.log("viesti record inserted");
+    });
+
+  var reply = {
+    user: user,
+    ryhma: ryhma,
+    viesti: viesti,
+    status:"all done"
+  }
+
+  response.send(reply);
+}
+
+
 
 app.get('/beacon/:major', openSite);
 
@@ -227,7 +249,7 @@ function openSite(request , response){
 
   	function haeViesti(ryhma){
   		console.log(ryhma)
-  		connection.query('SELECT * FROM ostable Where Ryhma = ?', [ryhma] , function (err, result) {
+  		connection.query('SELECT * FROM vstable2 Where Ryhma = ?', [ryhma] , function (err, result) {
     		if (err) {
     			throw err;
     		}else{
@@ -245,7 +267,6 @@ function openSite(request , response){
 
   	function vastaa(){
 	if (ryhma != "null") {
-		//response.sendFile(__dirname + '/public/default.html');
 		response.render("index", { 
 			ryhma: ryhma,
 			saa: saa,
