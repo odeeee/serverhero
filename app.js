@@ -200,9 +200,9 @@ function tallennaViesti(request , response){
   var msg = data.msg;
   var user = data.user;
 
-  var viest  = {Ryhma: ryhma ,Viesti: viesti};
+  var viest  = {Ryhma: ryhma ,Viesti: msg};
 
-  connection.query('INSERT INTO vstable2 SET ? ON DUPLICATE KEY UPDATE Viesti = ? ', [viest, viesti] , function (err, result) {
+  connection.query('INSERT INTO vstable2 SET ? ON DUPLICATE KEY UPDATE Viesti = ? ', [viest, msg] , function (err, result) {
       if (err) throw err;
       console.log("viesti record inserted");
     });
@@ -210,7 +210,7 @@ function tallennaViesti(request , response){
   var reply = {
     user: user,
     ryhma: ryhma,
-    viesti: viesti,
+    viesti: msg,
     status:"all done"
   }
 
