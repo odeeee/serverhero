@@ -95,7 +95,7 @@ function sendStuff(request , response) {
 app.get('/add/1/:beacon/:ryhma/:saa', addInfo);
 
 function addInfo(request , response){
-	console.log('addInfo')
+	console.log('addInfo1')
 	var data = request.params;
 	var beacon1 = data.beacon;
 	var beacon = beacon1.toString();
@@ -103,10 +103,13 @@ function addInfo(request , response){
 	var saa = data.saa;
 	naytot[beacon] = ryhma;
 	var viesti = " ";
-
+  //virhe tässä jos ei viestiä haettavaksi kaatuu
 	connection.query('SELECT Viesti FROM vstable2 Where Ryhma = ?', [ryhma] , function (err, result) {
     if (err) {
-    	throw err;
+    	//throw err;
+      viesti = "Ryhmälle ei ole viestiä";
+      console.log('Ryhmällä ei viestiä');
+      updateDb();
     }else{
     	console.log("Viesti haettu " + result[0].Viesti);
     	setViesti(result);
