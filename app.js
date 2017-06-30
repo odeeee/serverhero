@@ -103,17 +103,24 @@ function addInfo(request , response){
 	var saa = data.saa;
 	naytot[beacon] = ryhma;
 	var viesti = " ";
-  //virhe tässä jos ei viestiä haettavaksi kaatuu
-  //testi että onko kyseistä ryhmää taulokossa tarvitaan
+  
 	connection.query('SELECT Viesti FROM vstable2 Where Ryhma = ?', [ryhma] , function (err, result) {
     if (err) {
     	//throw err;
+      console.err;
       viesti = "Ryhmälle ei ole viestiä";
       console.log('Ryhmällä ei viestiä');
       updateDb();
     }else{
+      if(result!="")
+      {
     	console.log("Viesti haettu " + result[0].Viesti);
     	setViesti(result);
+      }else{
+        console.log("Ei viestiä");
+        viesti = " ";
+        updateDb();
+      }
 	}
   	});
 
