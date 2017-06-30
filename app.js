@@ -104,6 +104,7 @@ function addInfo(request , response){
 	naytot[beacon] = ryhma;
 	var viesti = " ";
   //virhe tässä jos ei viestiä haettavaksi kaatuu
+  //testi että onko kyseistä ryhmää taulokossa tarvitaan
 	connection.query('SELECT Viesti FROM vstable2 Where Ryhma = ?', [ryhma] , function (err, result) {
     if (err) {
     	//throw err;
