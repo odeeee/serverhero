@@ -1,20 +1,43 @@
 <!doctype html>
 <html>
-  <head>
-  	<script>
-	</script>
 
+  <head>
     <title>Testisivu</title>
-    <style>
-    </style>
-  </head>
-  <body>
-	<script>
+
+    <script type="text/javascript">
 	var paikkakunta =  <%- JSON.stringify(saa) %>;
 	var ryhma = <%- JSON.stringify(ryhma) %>;
 	var viesti = <%- JSON.stringify(viesti) %>;
 	console.log(paikkakunta + ryhma + viesti);
-
 	</script>
+
+  </head>
+
+  <body>
+	<h1>
+		Olet ryhmässä: 
+		<script type="text/javascript">
+        	document.write(ryhma)
+      	</script>
+	</h1>
+
+	<h1>
+		Paikkakuntana: 
+		<script type="text/javascript">
+        	document.write(paikkakunta)
+      	</script>
+	</h1>
+
+
+	<h1>Ruokana tänään: </h1>
+
+
+	<h1>
+		Viesti: 
+		<script type="text/javascript">
+        	document.write(viesti)
+      	</script>
+	</h1>
  </body>
+
 </html>
