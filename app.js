@@ -319,11 +319,11 @@ function openSite(request , response){
     res.on('end', function(){
         var ruokaLista = JSON.parse(body);
         ruoka = ruokaLista.MenusForDays;
-        if(ruoka == []){
-          ruoka = "Ei ruokaa tänään"
+        if(typeof ruoka !== 'undefined' && ruoka.length > 0){
           console.log("Ruokana tänään: ",ruoka);
           vastaa();
         }else{
+          ruoka = "Ei ruokaa tänään"
           console.log("Ruokana tänään: ",ruoka);
           vastaa();
         }
