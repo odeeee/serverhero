@@ -320,7 +320,7 @@ function openSite(request , response){
         var ruokaLista = JSON.parse(body);
         ruoka = ruokaLista.MenusForDays;
         if(ruoka == []){
-          ruoka = ""
+          ruoka = "Ei ruokaa tänään"
           console.log("Ruokana tänään: ",ruoka);
           vastaa();
         }else{
