@@ -295,12 +295,12 @@ function openSite(request , response){
         var saaData = JSON.parse(body);
         keli = saaData.main.temp;
         console.log("Got a response: ",keli , saaData);
+        vastaa();
     });
     }).on('error', function(e){
       console.log("Got an error: ", e);
     });
 
-      vastaa();
     }
 
   	function vastaa(){
