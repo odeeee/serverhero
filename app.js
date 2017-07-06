@@ -116,7 +116,6 @@ function addInfo(request , response){
 
   if (ryhmaTunnus != "null" && beacon1 != "null") {
     console.log("add1: ryhmaTunnus beaconilla varattu");
-    return;
   }else{
 	
 	var beacon = beacon1.toString();
@@ -201,7 +200,6 @@ var beacon1 = data.beacon;
 
   if (ryhmaTunnus != "null" && beacon1 != "null") {
     console.log("add2: ryhmaTunnus beaconilla varattu");
-    return;
   }else{
 	
 	var beacon = beacon1.toString();
