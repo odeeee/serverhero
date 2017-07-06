@@ -240,6 +240,7 @@ function openSite(request , response){
 	var ryhma = "null";
 	var viesti = " ";
   var keli = 0;
+  var ruoka;
 
 	//var ryhmaTunnus = getValues(naytot,key);
 	//console.log(ryhmaTunnus);
@@ -295,7 +296,37 @@ function openSite(request , response){
         var saaData = JSON.parse(body);
         keli = saaData.main.temp;
         console.log("Got a response: ",keli , saaData);
-        vastaa();
+        asetaRuoka();
+    });
+    }).on('error', function(e){
+      console.log("Got an error: ", e);
+    });
+
+    }
+
+    function asetaRuoka(){
+    var url = "http://www.amica.fi/modules/json/json/Index?costNumber=0235&language=fi";
+    var http = require('http');
+
+
+    http.get(url, function(res){
+    var body = '';
+
+    res.on('data', function(chunk){
+        body += chunk;
+    });
+
+    res.on('end', function(){
+        var ruokaLista = JSON.parse(body);
+        ruoka = saaData.MenusForDays;
+        if(ruoka == []){
+          ruoka = ""
+          console.log("Ruokana tänään: ",ruoka);
+          vastaa();
+        }else{
+          console.log("Ruokana tänään: ",ruoka);
+          vastaa();
+        }
     });
     }).on('error', function(e){
       console.log("Got an error: ", e);
@@ -309,7 +340,8 @@ function openSite(request , response){
 			ryhma: ryhma,
 			saa: saa,
 			viesti: viesti,
-      keli: keli});
+      keli: keli,
+      ruoka: ruoka});
 		console.log("Vastattu");
 		
 	}else{
