@@ -239,6 +239,7 @@ function openSite(request , response){
 	var saa = " ";
 	var ryhma = "null";
 	var viesti = " ";
+  var keli = 0;
 
 	//var ryhmaTunnus = getValues(naytot,key);
 	//console.log(ryhmaTunnus);
@@ -274,15 +275,41 @@ function openSite(request , response){
   	function seTupViesti(result){
   		viesti = result[0].Viesti;
   		console.log("viesti: " + viesti);
-  		vastaa();
+  		asetaSaa();
   	}
+
+    function asetaSaa(){
+
+    var url = "http://api.openweathermap.org/data/2.5/weather?q="+saa+"&units=metric&appid=5547c86c9c193df9f6cfb0724ff6994e";
+    var http = require('http');
+
+
+    http.get(url, function(res){
+    var body = '';
+
+    res.on('data', function(chunk){
+        body += chunk;
+    });
+
+    res.on('end', function(){
+        var saaData = JSON.parse(body);
+        keli = saaData.main.temp;
+        console.log("Got a response: ",keli , saaData);
+    });
+    }).on('error', function(e){
+      console.log("Got an error: ", e);
+    });
+
+      vastaa();
+    }
 
   	function vastaa(){
 	if (ryhma != "null") {
 		response.render("index", { 
 			ryhma: ryhma,
 			saa: saa,
-			viesti: viesti});
+			viesti: viesti,
+      keli: keli});
 		console.log("Vastattu");
 		
 	}else{

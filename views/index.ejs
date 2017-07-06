@@ -8,7 +8,8 @@
 	var paikkakunta =  <%- JSON.stringify(saa) %>;
 	var ryhma = <%- JSON.stringify(ryhma) %>;
 	var viesti = <%- JSON.stringify(viesti) %>;
-	console.log(paikkakunta + ryhma + viesti);
+	var lampotila = <%- JSON.stringify(keli) %>;
+	console.log(paikkakunta + " " + lampotila + " " + ryhma + " " + viesti);
 	</script>
 
   </head>
@@ -25,6 +26,13 @@
 		Paikkakuntana: 
 		<script type="text/javascript">
         	document.write(paikkakunta)
+      	</script>
+	</h1>
+
+	<h1>
+		Lämpötila on: 
+		<script type="text/javascript">
+        	document.write(lampotila)
       	</script>
 	</h1>
 
