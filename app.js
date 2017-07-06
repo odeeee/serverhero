@@ -318,7 +318,7 @@ function openSite(request , response){
 
     res.on('end', function(){
         var ruokaLista = JSON.parse(body);
-        ruoka = saaData.MenusForDays;
+        ruoka = ruokaLista.MenusForDays;
         if(ruoka == []){
           ruoka = ""
           console.log("Ruokana tänään: ",ruoka);
