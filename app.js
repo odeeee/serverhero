@@ -389,7 +389,5 @@ function openSite(request , response){
 	}else{
 		console.log("ryhma null");
 		response.sendFile(__dirname + '/public/default.html');
-	}
-	}
-	
+	}		
 }
