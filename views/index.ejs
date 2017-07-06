@@ -2,7 +2,23 @@
 <html>
 
   <head>
-    <title>Testisivu</title>
+    <title>Buddy</title>
+
+    <style>
+	h1 {text-align:center; margin-top: 10px;}
+	p {text-align:center; margin-top: 20%;}
+
+	* {
+		margin: 0;
+        padding: 0;
+        border: 0;
+        outline: 0;
+        vertical-align: baseline;
+        background: transparent;
+        overflow-x: hidden; 
+    	overflow-y: hidden;
+    }
+	</style>
 
     <script type="text/javascript">
 	var paikkakunta =  <%- JSON.stringify(saa) %>;
@@ -10,13 +26,32 @@
 	var viesti = <%- JSON.stringify(viesti) %>;
 	var viesti2 = viesti.replace("-"," ");
 	var lampotila = <%- JSON.stringify(keli) %>;
-	var ruoka = <%- JSON.stringify(ruoka) %>;
 	console.log(paikkakunta + " " + lampotila + " " + ryhma + " " + viesti);
 	</script>
 
   </head>
 
+  <div class="multi_bg_example">
+
+<style>
+  .multi_bg_example {
+  height: 96vh;
+
+  border-style: solid;
+  border-color: #e28a26; /* #ff8200 is the original */
+  border-width: 24px;
+
+  background-image: url("left_top.png"), url("right_top.png"), url("left_bottom.png"), url("right_bottom.png");
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
+  background-position: top left, top right, bottom left, bottom right;
+  }
+
+</style>
+
   <body>
+
+  	<p></p> <!-- Tämä rivi luo marginaalin ylös teksteille. Marginaalin kokoa voi vaihtaa ylhäältä esim:	 p {text-align:center; margin-top: 20%;} -->
+
 	<h1>
 		Olet ryhmässä: 
 		<script type="text/javascript">
@@ -40,9 +75,7 @@
 
 
 	<h1>Ruokana tänään: </h1>
-		<script type="text/javascript">
-        	document.write(ruoka)
-      	</script>
+
 
 	<h1>
 		Viesti: 
@@ -51,5 +84,7 @@
       	</script>
 	</h1>
  </body>
+
+ </div>
 
 </html>
