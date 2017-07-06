@@ -8,6 +8,7 @@
 	var paikkakunta =  <%- JSON.stringify(saa) %>;
 	var ryhma = <%- JSON.stringify(ryhma) %>;
 	var viesti = <%- JSON.stringify(viesti) %>;
+	var viesti2 = viesti.replace("-"," ");
 	var lampotila = <%- JSON.stringify(keli) %>;
 	console.log(paikkakunta + " " + lampotila + " " + ryhma + " " + viesti);
 	</script>
@@ -43,7 +44,7 @@
 	<h1>
 		Viesti: 
 		<script type="text/javascript">
-        	document.write(viesti)
+        	document.write(viesti2)
       	</script>
 	</h1>
  </body>
