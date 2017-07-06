@@ -96,8 +96,29 @@ app.get('/add/1/:beacon/:ryhma/:saa', addInfo);
 
 function addInfo(request , response){
 	console.log('addInfo1')
-	var data = request.params;
-	var beacon1 = data.beacon;
+
+  var ryhmaTunnus = getValues(naytot,key);
+  var data = request.params;
+  var beacon1 = data.beacon;
+
+  function getValues(obj, key) {
+      var objects = [];
+      for (var i in obj) {
+          if (!obj.hasOwnProperty(i)) continue;
+          if (typeof obj[i] == 'object') {
+              objects = objects.concat(getValues(obj[i], key));
+          } else if (i == key) {
+              objects.push(obj[i]);
+          }
+      }
+    return objects;
+  }
+
+  if (ryhmaTunnus != "null" && beacon1 != "null") {
+    console.log("add1: ryhmaTunnus beaconilla varattu");
+    return;
+  }else{
+	
 	var beacon = beacon1.toString();
 	var ryhma = data.ryhma;
 	var saa = data.saa;
@@ -154,13 +175,35 @@ function addInfo(request , response){
 	}
 }
 }
+}
 
 app.get('/add/2/:beacon/:ryhma/:saa/:viesti', addInfoV);
 
 function addInfoV(request , response){
 	console.log('addInfoV');
-	var data = request.params;
-	var beacon1 = data.beacon;
+
+var ryhmaTunnus = getValues(naytot,key);
+var data = request.params;
+var beacon1 = data.beacon;
+
+  function getValues(obj, key) {
+      var objects = [];
+      for (var i in obj) {
+          if (!obj.hasOwnProperty(i)) continue;
+          if (typeof obj[i] == 'object') {
+              objects = objects.concat(getValues(obj[i], key));
+          } else if (i == key) {
+              objects.push(obj[i]);
+          }
+      }
+    return objects;
+  }
+
+  if (ryhmaTunnus != "null" && beacon1 != "null") {
+    console.log("add2: ryhmaTunnus beaconilla varattu");
+    return;
+  }else{
+	
 	var beacon = beacon1.toString();
 	var ryhma = data.ryhma;
 	var saa = data.saa;
@@ -201,6 +244,7 @@ function addInfoV(request , response){
 	response.send(reply);
 	}
 }
+}
 
 app.get('/viesti/:ryhma/:msg/:user', tallennaViesti);
 
@@ -234,7 +278,8 @@ app.get('/beacon/:major', openSite);
 
 function openSite(request , response){
 	console.log('openSite');
-	var data = request.params;
+
+  var data = request.params;
 	var key = data.major;
 	var saa = " ";
 	var ryhma = "null";
@@ -242,7 +287,6 @@ function openSite(request , response){
   var keli = 0;
   var ruoka;
 
-	//var ryhmaTunnus = getValues(naytot,key);
 	//console.log(ryhmaTunnus);
 	
 	connection.query('SELECT * FROM ostable Where Major = ?', [key] , function (err, result) {
@@ -348,19 +392,6 @@ function openSite(request , response){
 		console.log("ryhma null");
 		response.sendFile(__dirname + '/public/default.html');
 	}
-	}
-
-	function getValues(obj, key) {
-    	var objects = [];
-    	for (var i in obj) {
-        	if (!obj.hasOwnProperty(i)) continue;
-        	if (typeof obj[i] == 'object') {
-            	objects = objects.concat(getValues(obj[i], key));
-        	} else if (i == key) {
-            	objects.push(obj[i]);
-        	}
-    	}
-    return objects;
 	}
 	
 }
