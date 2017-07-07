@@ -293,7 +293,7 @@ function openSite(request , response){
     	}else{
     		console.log("Data haettu " + result[0]);
     		seTup(result);
-		}
+		  }
   	});
 	
   	function seTup(result){
@@ -312,8 +312,8 @@ function openSite(request , response){
     			console.log("Viesti haettu " + result[0].Viesti);
     			seTupViesti(result);
 			}
-  		});	
-  	}
+  	});	
+  	
 
   	function seTupViesti(result){
   		viesti = result[0].Viesti;
@@ -326,49 +326,45 @@ function openSite(request , response){
     var url = "http://api.openweathermap.org/data/2.5/weather?q="+saa+"&units=metric&appid=5547c86c9c193df9f6cfb0724ff6994e";
     var http = require('http');
 
-
     http.get(url, function(res){
-    var body = '';
+      var body = '';
 
-    res.on('data', function(chunk){
+      res.on('data', function(chunk){
         body += chunk;
-    });
+      });
 
-    res.on('end', function(){
+      res.on('end', function(){
         var saaData = JSON.parse(body);
         keli = saaData.main.temp;
         console.log("Got a response: ",keli , saaData);
         asetaRuoka();
-    });
+      });
     }).on('error', function(e){
       console.log("Got an error: ", e);
-    });
-
+      });
     }
 
     function asetaRuoka(){
     var url = "http://www.amica.fi/modules/json/json/Index?costNumber=0235&language=fi";
     var http = require('http');
 
-
     http.get(url, function(res){
     var body = '';
-
     res.on('data', function(chunk){
         body += chunk;
     });
 
     res.on('end', function(){
-        var ruokaLista = JSON.parse(body);
-        ruoka = ruokaLista.MenusForDays;
-        if(typeof ruoka !== 'undefined' && ruoka.length > 0){
-          console.log("Ruokana tänään: ",ruoka);
-          vastaa();
-        }else{
-          ruoka = "Ei ruokaa tänään"
-          console.log("Ruokana tänään: ",ruoka);
-          vastaa();
-        }
+      var ruokaLista = JSON.parse(body);
+      ruoka = ruokaLista.MenusForDays;
+      if(typeof ruoka !== 'undefined' && ruoka.length > 0){
+        console.log("Ruokana tänään: ",ruoka);
+        vastaa();
+      }else{
+        ruoka = "Ei ruokaa tänään"
+        console.log("Ruokana tänään: ",ruoka);
+        vastaa();
+      }
     });
     }).on('error', function(e){
       console.log("Got an error: ", e);
@@ -385,7 +381,6 @@ function openSite(request , response){
       keli: keli,
       ruoka: ruoka});
 		console.log("Vastattu");
-		
 	}else{
 		console.log("ryhma null");
 		response.sendFile(__dirname + '/public/default.html');
