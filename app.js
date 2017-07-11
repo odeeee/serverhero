@@ -354,13 +354,15 @@ function openSite(request , response){
 
   function vastaa(){
 	  if (ryhma != "null") {
-		  response.render("index", { 
+
+      response.sendFile(__dirname + '/public/default.html');
+		  /*response.render("index", { 
 			 ryhma: ryhma,
 			 saa: saa,
 			 viesti: viesti,
         keli: keli,
         ruoka: ruoka
-      });
+      });*/
 		  console.log("Vastattu");
 	  }else{
 		  console.log("ryhma null");
