@@ -26,7 +26,8 @@
 	var viesti = <%- JSON.stringify(viesti) %>;
 	var viesti2 = viesti.replace("-"," ");
 	var lampotila = <%- JSON.stringify(keli) %>;
-	console.log(paikkakunta + " " + lampotila + " " + ryhma + " " + viesti);
+  var ruoka = <%- JSON.stringify(ruoka) %>;
+	console.log(paikkakunta + " " + lampotila + " " + ryhma + " " + viesti + " " + ruoka);
 	</script>
 
   </head>
@@ -75,6 +76,9 @@
 
 
 	<h1>Ruokana tänään: </h1>
+  <script type="text/javascript">
+          document.write(ruoka)
+        </script>
 
 
 	<h1>
