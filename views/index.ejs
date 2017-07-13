@@ -1,4 +1,6 @@
 <!doctype html>
+<link rel='stylesheet' type='text/css' href='css/style.php' />
+
 <html>
 
   <head>
@@ -7,6 +9,7 @@
     <style>
 	h1 {text-align:center; margin-top: 10px;}
 	p {text-align:center; margin-top: 20%;}
+  h2 {margin-left: 49%;}
 
 	* {
 		margin: 0;
@@ -20,14 +23,15 @@
     }
 	</style>
 
-    <script type="text/javascript">
+  <script type="text/javascript">
 	var paikkakunta =  <%- JSON.stringify(saa) %>;
 	var ryhma = <%- JSON.stringify(ryhma) %>;
 	var viesti = <%- JSON.stringify(viesti) %>;
 	var viesti2 = viesti.replace("-"," ");
 	var lampotila = <%- JSON.stringify(keli) %>;
   var ruoka = <%- JSON.stringify(ruoka) %>;
-	console.log(paikkakunta + " " + lampotila + " " + ryhma + " " + viesti + " " + ruoka);
+  var saaId = "02d"; //<%- JSON.stringify(saaId) %>;
+	console.log(paikkakunta + " " + lampotila + " " + ryhma + " " + viesti + " " + ruoka + " " + id);
 	</script>
 
   </head>
@@ -47,6 +51,15 @@
   background-position: top left, top right, bottom left, bottom right;
   }
 
+:root {
+  --url: url("http://openweathermap.org/img/w/<?php echo $ID; ?>.png");
+}
+  .poutasaa { 
+  background-image: var(--url);
+  width: 50px;
+  height: 50px;
+  background-repeat: no-repeat;
+   }
 </style>
 
   <body>
@@ -68,18 +81,17 @@
 	</h1>
 
 	<h1>
-		Lämpötila on: 
+		Ulkona on: 
 		<script type="text/javascript">
         	document.write(lampotila)
       	</script>
+        <h2 class="poutasaa"></h2>
 	</h1>
-
 
 	<h1>Ruokana tänään: </h1>
   <script type="text/javascript">
           document.write(ruoka)
         </script>
-
 
 	<h1>
 		Viesti: 
