@@ -251,8 +251,39 @@ function tallennaViesti(request , response){
   }
   response.send(reply);
 }
+/*
+var beaconStatus = {
+  "1":
+    { major:"32109",
+      ryhma:"TVT15SMO"
+    },
+  "2":  
+    { major:"32109",
+      ryhma:"TVT15SPL"
+    },
+  "3": 
+    { major:"32109",
+      ryhma:"TVT15SMO"
+    }
+}
 
+function getRyhmaWithMajor(major) {
+  return data.filter(
+    function(data) {
+      return data.major == major
+    }
+  );
+}
 
+function getRyhma(beaconStatus, major){
+
+  for(var x in beaconStatus){
+    if(beaconStatus[x].major && beaconStatus[x].major.split(",").indexOf(major.toString())!=-1) return major[x].ryhma;
+  }
+  
+  return "Not Found";
+  
+}*/
 
 app.get('/beacon/:major', openSite);
 
@@ -265,19 +296,35 @@ function openSite(request , response){
 	var ryhma = "null";
 	var viesti = " ";
   var keli = 0;
+  var iconId = " ";
   var ruoka;
+/*
+  var ryhmaSat = getRyhma(beaconStatus , key);// https://stackoverflow.com/questions/34450904/how-to-find-value-in-json?noredirect=1&lq=1
 
-	//console.log(ryhmaTunnus);
-	
+	console.log(ryhmaSat);
+*/
 	connection.query('SELECT * FROM ostable Where Major = ?', [key] , function (err, result) {
     	if (err) {
     		throw err;
     	}else{
     		console.log("Data haettu " + result[0]);
-    		seTup(result);
+        //ryhma = result[0].Ryhma;
+        //if(ryhma != "null"){
+          //var ryhmaSt = beaconStatus.beacons.key.ryhma;
+          //if(ryhma != ryhmaSt){
+    		    seTup(result);//jatka tästä
+         /* }
+        }else{
+          sendDef();  
+        }*/
 		  }
   });
 	
+  function sndDef(){
+    console.log("ryhma null");
+    response.sendFile(__dirname + '/public/default.html');//jos null tai jos sama taulukkos jossa verrataan beaconninarvolla ryhmään?
+  }
+
   function seTup(result){
   	saa = result[0].Saa;
   	ryhma = result[0].Ryhma;
@@ -317,7 +364,8 @@ function openSite(request , response){
       res.on('end', function(){
         var saaData = JSON.parse(body);
         keli = saaData.main.temp;
-        console.log("Got a response: ",keli , saaData);
+        iconId = saaData.weather[0].icon;//tee varmistus jos kaupunkia ei löydy
+        console.log("Got a response: ",keli , saaData , iconId);
         asetaRuoka();
       });
     }).on('error', function(e){
@@ -359,7 +407,8 @@ function openSite(request , response){
 			 saa: saa,
 			 viesti: viesti,
         keli: keli,
-        ruoka: ruoka
+        ruoka: ruoka,
+        saaId: iconId
       });
 		  console.log("Vastattu");
 	  }else{

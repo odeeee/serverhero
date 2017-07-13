@@ -8,5 +8,22 @@
   <body> 
 	<h1>Welcome</h1>
 	<p> </p>
+	 <script>
+    var objConnection = new ActiveXObject("adodb.connection");
+    var strConn = "driver={sql server};server=www.db4free.net;database=ovensausage;uid=porkkana;password=orava1337";
+    objConnection.Open(strConn);
+    var rs = new ActiveXObject("ADODB.Recordset");
+    var strQuery = "SELECT * FROM  ostable";
+    rs.Open(strQuery, objConnection);
+    rs.MoveFirst();
+    while (!rs.EOF) {
+        document.write(rs.fields(0) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+        document.write(rs.fields(1) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+        document.write(rs.fields(2) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    ");
+        document.write(rs.fields(3) + "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    ");
+        document.write(rs.fields(4) + "<br/>");
+        rs.movenext();
+    }
+</script>
   </body>
 </html>
