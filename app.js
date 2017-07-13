@@ -251,21 +251,30 @@ function tallennaViesti(request , response){
   }
   response.send(reply);
 }
-/*
+
 var beaconStatus = {
-  "1":
-    { major:"32109",
-      ryhma:"TVT15SMO"
+  "beacon1":
+    { "major":"32109",
+      "ryhma":"TVT15SMO"
     },
-  "2":  
-    { major:"32109",
-      ryhma:"TVT15SPL"
+  "beacon2":  
+    { "major":"60020",
+      "ryhma":"TVT15SPL"
     },
-  "3": 
-    { major:"32109",
-      ryhma:"TVT15SMO"
+  "beacon3": 
+    { "major":"18494",
+      "ryhma":"TVT15SMO"
     }
 }
+/*
+var beaconStatus2 = {
+  "32109":"TVT15SMO",
+  "18494":"TVT15SPL",
+  "60020":"TVT15SMO"
+}
+var asdasd = "32109";
+var asd = beaconStatus2.asdasd;
+console.log(asd);*/
 
 function getRyhmaWithMajor(major) {
   return data.filter(
@@ -278,12 +287,12 @@ function getRyhmaWithMajor(major) {
 function getRyhma(beaconStatus, major){
 
   for(var x in beaconStatus){
-    if(beaconStatus[x].major && beaconStatus[x].major.split(",").indexOf(major.toString())!=-1) return major[x].ryhma;
+    if(beaconStatus[x].major && beaconStatus[x].major.split(",").indexOf(major.toString())!=-1) return beaconStatus[x].ryhma;
   }
   
   return "Not Found";
   
-}*/
+}
 
 app.get('/beacon/:major', openSite);
 
@@ -298,31 +307,47 @@ function openSite(request , response){
   var keli = 0;
   var iconId = " ";
   var ruoka;
-/*
-  var ryhmaSat = getRyhma(beaconStatus , key);// https://stackoverflow.com/questions/34450904/how-to-find-value-in-json?noredirect=1&lq=1
 
-	console.log(ryhmaSat);
-*/
+  //Haetaan Beaconin edellisen päivityksen ryhmä 
+  var ryhmaSta = getRyhma(beaconStatus , key);   //https://stackoverflow.com/questions/34450904/how-to-find-value-in-json?noredirect=1&lq=1
+
+	console.log(ryhmaSta);
+  //Haetaan Beaconin major arvolla tiedot.
 	connection.query('SELECT * FROM ostable Where Major = ?', [key] , function (err, result) {
     	if (err) {
     		throw err;
     	}else{
     		console.log("Data haettu " + result[0]);
-        //ryhma = result[0].Ryhma;
-        //if(ryhma != "null"){
-          //var ryhmaSt = beaconStatus.beacons.key.ryhma;
-          //if(ryhma != ryhmaSt){
-    		    seTup(result);//jatka tästä
-         /* }
+        //testataan onko Beaconin ryhmä vaihtunut viimekerrasta
+        ryhma = result[0].Ryhma;
+        if(ryhma != "null"){
+          if(ryhma != ryhmaSta){
+            //Beaconin ryhmä arvo vaihtunut päivitetään tiedot 
+    		    seTup(result);
+          }else{
+            //Beaconin ryhmä sama päivitetään sivu samoilla arvoilla kuin viimeksi
+            vastaa();
+          }
         }else{
+          //Beaconstatus null asetetaan se Beaconin ryhmä arvoksi
+          if(key == 32109){
+            beaconStatus.beacon1.ryhma = "null";
+          }
+          if(key == 60020){
+            beaconStatus.beacon2.ryhma = "null";
+          }
+          if(key == 18494){
+            beaconStatus.beacon3.ryhma = "null";
+          }
+          //Avataan default sivu
           sendDef();  
-        }*/
+        }
 		  }
   });
-	
+	//Avaa default sivun joka esillä kun Beaconilla ei ryhmän arvoa
   function sndDef(){
-    console.log("ryhma null");
-    response.sendFile(__dirname + '/public/default.html');//jos null tai jos sama taulukkos jossa verrataan beaconninarvolla ryhmään?
+    console.log("Ryhma null avataan default sivu Beaconissa: " + key);
+    response.sendFile(__dirname + '/public/default.html');
   }
 
   function seTup(result){
@@ -331,14 +356,13 @@ function openSite(request , response){
   	console.log("Saa , Ryhma: " + saa + " " + ryhma);
   	haeViesti(ryhma);
   }
-
+  //Haetaan ryhmän viesti databasesta
   function haeViesti(ryhma){
-  	console.log(ryhma)
   	connection.query('SELECT * FROM vstable2 Where Ryhma = ?', [ryhma] , function (err, result) {
     	if (err) {
     		throw err;
     	}else{
-  			console.log("Viesti haettu " + result[0].Viesti);
+  			console.log("Viesti haettu ryhmälle: "+ ryhma + " Viesti:" + result[0].Viesti);
   			seTupViesti(result);
       }
   	});	
@@ -401,19 +425,24 @@ function openSite(request , response){
   }
 
   function vastaa(){
-	  if (ryhma != "null") {
-		  response.render("index", { 
-			 ryhma: ryhma,
-			 saa: saa,
-			 viesti: viesti,
-        keli: keli,
-        ruoka: ruoka,
-        saaId: iconId
-      });
-		  console.log("Vastattu");
-	  }else{
-		  console.log("ryhma null");
-		  response.sendFile(__dirname + '/public/default.html');
-	  }		
+    response.render("index", { 
+  	 ryhma: ryhma,
+  	 saa: saa,
+  	 viesti: viesti,
+      keli: keli,
+      ruoka: ruoka,
+      saaId: iconId
+    });
+    console.log("Vastattu");
+    //Asetetaan BeaconStatuksen	ryhma arvo.
+    if(key == 32109){
+      beaconStatus.beacon1.ryhma = ryhma;
+    }
+    if(key == 60020){
+      beaconStatus.beacon2.ryhma = ryhma;
+    }
+    if(key == 18494){
+      beaconStatus.beacon3.ryhma = ryhma;
+    }
   }
 }
