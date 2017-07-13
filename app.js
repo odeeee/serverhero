@@ -25,7 +25,7 @@ app.listen(port , function(){
 	console.log('Server listening');
   connDb();
 });
-
+//Alustetaan databaseyhteys
 var connection = mysql.createConnection({
   connectionLimit : 100,
   host     : 'www.db4free.net',
@@ -35,20 +35,6 @@ var connection = mysql.createConnection({
   database : 'ovensausage'
 });
 
-
-/*
-    var sql = "CREATE TABLE vstable2 (Ryhma VARCHAR(255) PRIMARY KEY, Viesti TEXT)";
-  	connection.query(sql, function (err, result) {
-    if (err) throw err;
-    console.log("Table created");
-
-    var sql = "INSERT INTO vstable2 (Ryhma, Viesti) VALUES ('TVT15SPO', 'default')";
-  	connection.query(sql, function (err, result) {
-    if (err) throw err;
-    console.log("1 record inserted");
-  });
-  	}); 
-*/
 //Yhdistää databaseen
 function connDb(){
   console.log('Connecting to database...');
@@ -62,12 +48,11 @@ function connDb(){
     }
   });
 }
-
 //Yllä pitää yhteyttä Databaseen 
 setInterval(function () {
   connection.query('SELECT 1');
 }, 5000);
-
+//Tulostaa taulukot vstable2 ja ostable
 function databTulostus(){
 	connection.query('SELECT * from vstable2', function(err, rows, fields) {
   		if (!err)
@@ -83,7 +68,6 @@ function databTulostus(){
     		console.log('Error while performing Query. ');
 	});
 }
-//connection.end();
 
 //Tällä haetaan arvoja key:llä JSON tiedostosta
 function getValues(obj, key) {
@@ -105,29 +89,28 @@ function sendStuff(request , response) {
 	response.send(naytot);
 	console.log('sendStuff loaded');
 }
-
+//Url johon Android yhdistää jos ei samalla päivitä viestiä https://oven-sausage.herokuapp.com/add/1/BEACONIN_MAJOR/RYHMÄTUNNUS/KAUPUNKI
 app.get('/add/1/:beacon/:ryhma/:saa', addInfo);
 
 function addInfo(request , response){
 	console.log('addInfo1')
 
-  var ryhmaTunnus = getValues(naytot,key);
   var data = request.params;
   var beacon1 = data.beacon;
+  var ryhma = data.ryhma;
+  var ryhmaTunnus = getValues(naytot,beacon1);
+  console.log(ryhmaTunnus + " " + ryhma); 
 
-  if (ryhmaTunnus != "null" && beacon1 != "null") {
+  if (ryhmaTunnus != "null" && ryhma != "null") {
     console.log("add1: ryhmaTunnus beaconilla varattu");
   }else{
-	
 	  var beacon = beacon1.toString();
-	  var ryhma = data.ryhma;
 	  var saa = data.saa;
 	  naytot[beacon] = ryhma;
 	  var viesti = " ";
   
 	  connection.query('SELECT Viesti FROM vstable2 Where Ryhma = ?', [ryhma] , function (err, result) {
       if (err) {
-    	 //throw err;
         console.err;
         viesti = "Ryhmälle ei ole viestiä";
         console.log('Ryhmällä ei viestiä');
@@ -176,21 +159,21 @@ function addInfo(request , response){
   }
 }
 
-
+//Url johon Android yhdistää jos päivittää viestin samalla https://oven-sausage.herokuapp.com/add/2/BEACONIN_MAJOR/RYHMÄTUNNUS/KAUPUNKI/VIESTI
 app.get('/add/2/:beacon/:ryhma/:saa/:viesti', addInfoV);
 
 function addInfoV(request , response){
 	console.log('addInfoV');
-
-  var ryhmaTunnus = getValues(naytot,key);
   var data = request.params;
   var beacon1 = data.beacon;
+  var ryhma = data.ryhma;
+  var ryhmaTunnus = getValues(naytot,beacon1);
+  console.log(ryhmaTunnus + " " + ryhma); 
 
-  if (ryhmaTunnus != "null" && beacon1 != "null") {
+  if (ryhmaTunnus != "null" && ryhma != "null") {
     console.log("add2: ryhmaTunnus beaconilla varattu");
   }else{
 	  var beacon = beacon1.toString();
-	  var ryhma = data.ryhma;
 	  var saa = data.saa;
 	  var viesti = data.viesti;
 	  naytot[beacon] = ryhma;
@@ -388,7 +371,7 @@ function openSite(request , response){
       res.on('end', function(){
         var saaData = JSON.parse(body);
         keli = saaData.main.temp;
-        iconId = saaData.weather[0].icon;//tee varmistus jos kaupunkia ei löydy
+        iconId = saaData.weather[0].icon;
         console.log("Got a response: ",keli , saaData , iconId);
         asetaRuoka();
       });
