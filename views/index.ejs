@@ -30,7 +30,6 @@
 	var viesti2 = viesti.replace("-"," ");
 	var lampotila = <%- JSON.stringify(keli) %>;
   var ruoka = <%- JSON.stringify(ruoka) %>;
-  var saaId = "02d"; //<%- JSON.stringify(saaId) %>;
 	console.log(paikkakunta + " " + lampotila + " " + ryhma + " " + viesti + " " + ruoka + " " + id);
 	</script>
 
@@ -45,21 +44,12 @@
   border-style: solid;
   border-color: #e28a26; /* #ff8200 is the original */
   border-width: 24px;
-/*
+  /*
   background-image: url("left_top.png"), url("right_top.png"), url("left_bottom.png"), url("right_bottom.png");
   background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
   background-position: top left, top right, bottom left, bottom right;*/
   }
 
-:root {
-  --url: url("http://openweathermap.org/img/w/<?php echo $ID; ?>.png");
-}
-  .poutasaa { 
-  background-image: var(--url);
-  width: 50px;
-  height: 50px;
-  background-repeat: no-repeat;
-   }
 </style>
 
   <body>
@@ -85,8 +75,15 @@
 		<script type="text/javascript">
         	document.write(lampotila)
       	</script>
-        <h2 class="poutasaa"></h2>
-	</h1>
+
+        <img id="kuvaid" src="http://openweathermap.org/img/w/03d.png">
+          <script type="text/javascript">
+          var saaId2 = "02d"; //<%- JSON.stringify(saaId) %>;
+          document.getElementById("kuvaid").src="http://openweathermap.org/img/w/"+saaId2+".png";
+          </script>
+  </h1>
+
+        
 
 	<h1>Ruokana tänään: </h1>
   <script type="text/javascript">
