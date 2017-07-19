@@ -328,7 +328,7 @@ function openSite(request , response){
 		  }
   });
 	//Avaa default sivun joka esillä kun Beaconilla ei ryhmän arvoa
-  function sndDef(){
+  function sendDef(){
     console.log("Ryhma null avataan default sivu Beaconissa: " + key);
     response.sendFile(__dirname + '/public/default.html');
   }
