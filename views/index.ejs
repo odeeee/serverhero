@@ -6,22 +6,58 @@
   <head>
     <title>Buddy</title>
 
-    <style>
+<style>
 	h1 {text-align:center; margin-top: 10px;}
-	p {text-align:center; margin-top: 20%;}
-  h2 {margin-left: 49%;}
+	p {text-align:center; margin-top: 10%;}
 
-	* {
-		margin: 0;
-        padding: 0;
-        border: 0;
-        outline: 0;
-        vertical-align: baseline;
-        background: transparent;
-        overflow-x: hidden; 
-    	overflow-y: hidden;
-    }
-	</style>
+* {
+	  margin: 0;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    vertical-align: baseline;
+    background: transparent;
+    overflow-x: hidden; 
+	  overflow-y: hidden;
+}
+
+html,
+body {
+  height: 100%;
+  min-height: 100%;
+}
+.container1 {
+  position: absolute;
+  height: 100%;
+  width: 50vw;
+  z-index: -1;
+}
+.container2 {
+  position: absolute;
+  height: 50%;
+  width: 50vw;
+  z-index: -1;
+}
+.container3 {
+  position: absolute;
+  margin-top: 27%;
+  height: 50%;
+  width: 50vw;
+  z-index: -1;
+}
+.container1 {
+  background: #0f0; /* use bg image here */
+  right: 50%;
+}
+.container2 {
+  background: #f00; /* use bg image here */
+  left: 50%;
+}
+.container3 {
+  background: #0ff; /* use bg image here */
+  left: 50%;
+}
+</style>
 
   <script type="text/javascript">
 	var paikkakunta =  <%- JSON.stringify(saa) %>;
@@ -35,7 +71,7 @@
 
   </head>
 
-  <div class="multi_bg_example">
+<div class="multi_bg_example">
 
 <style>
   .multi_bg_example {
@@ -47,57 +83,60 @@
   /*
   background-image: url("left_top.png"), url("right_top.png"), url("left_bottom.png"), url("right_bottom.png");
   background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
-  background-position: top left, top right, bottom left, bottom right;*/
+  background-position: top left, top right, bottom left, bottom right;
+  */
   }
 
 </style>
 
-  <body>
+<body>
 
-  	<p></p> <!-- Tämä rivi luo marginaalin ylös teksteille. Marginaalin kokoa voi vaihtaa ylhäältä esim:	 p {text-align:center; margin-top: 20%;} -->
+<div class="container1">
+  <p></p> <!-- Tämä rivi luo marginaalin ylös teksteille. Marginaalin kokoa voi vaihtaa ylhäältä esim:   p {text-align:center; margin-top: 20%;} --> 
+  <h1>
+    Ryhmän 
+    <script type="text/javascript">
+          document.write(ryhma)
+        </script>
+     viesti:
+     <script type="text/javascript">
+          document.write(viesti2)
+        </script>
+  </h1>
 
-	<h1>
-		Olet ryhmässä: 
-		<script type="text/javascript">
-        	document.write(ryhma)
-      	</script>
-	</h1>
+</div>
 
-	<h1>
-		Paikkakuntana: 
-		<script type="text/javascript">
-        	document.write(paikkakunta)
-      	</script>
-	</h1>
+<div class="container2">
+  <p></p> <!-- Tämä rivi luo marginaalin ylös teksteille. Marginaalin kokoa voi vaihtaa ylhäältä esim:   p {text-align:center; margin-top: 20%;} --> 
+  <h1>
+    Paikkakunnan
+    <script type="text/javascript">
+          document.write(paikkakunta)
+        </script>
+         sää: <br>
+         <script type="text/javascript">
+          document.write(lampotila + "°C").fontsize(6)
+        </script>
 
-	<h1>
-		Ulkona on: 
-		<script type="text/javascript">
-        	document.write(lampotila)
-      	</script>
-
-        <img id="kuvaid" src="http://openweathermap.org/img/w/03d.png">
+        <img id="kuvaid" src="http://openweathermap.org/img/w/03d.png" height=150px>
           <script type="text/javascript">
           var saaId2 = "02d"; //<%- JSON.stringify(saaId) %>;
           document.getElementById("kuvaid").src="http://openweathermap.org/img/w/"+saaId2+".png";
           </script>
   </h1>
+</div>
 
-        
-
-	<h1>Ruokana tänään: </h1>
-  <script type="text/javascript">
+<div class="container3">
+  <p></p> <!-- Tämä rivi luo marginaalin ylös teksteille. Marginaalin kokoa voi vaihtaa ylhäältä esim:   p {text-align:center; margin-top: 20%;} --> 
+  <h1>Ruokana tänään: 
+    <script type="text/javascript">
           document.write(ruoka)
         </script>
+  </h1>
+</div>
+   
+</body>
 
-	<h1>
-		Viesti: 
-		<script type="text/javascript">
-        	document.write(viesti2)
-      	</script>
-	</h1>
- </body>
-
- </div>
+</div>
 
 </html>
