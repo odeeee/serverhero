@@ -5,6 +5,13 @@
 
   <head>
     <title>Buddy</title>
+    <script>
+    function timedRefresh(timeoutPeriod) {
+    setTimeout("location.reload(true);",timeoutPeriod);
+    }
+
+    window.onload = timedRefresh(5000);
+    </script>
 
 <style>
   @import url(https://fonts.googleapis.com/css?family=Oswald);
