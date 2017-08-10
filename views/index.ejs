@@ -1,5 +1,5 @@
 <!doctype html>
-<link rel='stylesheet' type='text/css' href='css/style.php' />
+<link rel='stylesheet' type='text/css' href='css/style.php'/>
 
 <html>
 
@@ -7,8 +7,9 @@
     <title>Buddy</title>
 
 <style>
-	h1 {text-align:center; margin-top: 10px;}
-	p {text-align:center; margin-top: 10%;}
+  @import url(https://fonts.googleapis.com/css?family=Oswald);
+	h1 {text-align:center; margin-top: 10px; font-family: 'Oswald';}
+	p {text-align:center; margin-top: 10%; font-family: 'Oswald';}
 
 * {
 	  margin: 0;
@@ -33,29 +34,38 @@ body {
   z-index: -1;
 }
 .container2 {
-  position: absolute;
-  height: 50%;
+  position: fixed;
+  top:0;
+  right:0;
+  height: 100%;
   width: 50vw;
   z-index: -1;
 }
 .container3 {
-  position: absolute;
-  margin-top: 27%;
+  position: fixed;
+  bottom:0;
+  right:0;
   height: 50%;
   width: 50vw;
   z-index: -1;
 }
 .container1 {
-  background: #0f0; /* use bg image here */
+  background: transparent;
   right: 50%;
 }
 .container2 {
-  background: #f00; /* use bg image here */
+  background: transparent;
   left: 50%;
+  border-style: solid;
+  border-color: #e28a26; /* #ff8200 is the original */
+  border-width: 1vw;
 }
 .container3 {
-  background: #0ff; /* use bg image here */
+  background: transparent;
   left: 50%;
+  border-style: solid;
+  border-color: #e28a26; /* #ff8200 is the original */
+  border-width: 1vw;
 }
 </style>
 
@@ -75,16 +85,11 @@ body {
 
 <style>
   .multi_bg_example {
-  height: 96vh;
+  height: 96.5vh;
 
   border-style: solid;
   border-color: #e28a26; /* #ff8200 is the original */
-  border-width: 24px;
-  /*
-  background-image: url("left_top.png"), url("right_top.png"), url("left_bottom.png"), url("right_bottom.png");
-  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat;
-  background-position: top left, top right, bottom left, bottom right;
-  */
+  border-width: 1vw;
   }
 
 </style>
@@ -134,7 +139,7 @@ body {
         </script>
   </h1>
 </div>
-   
+
 </body>
 
 </div>
