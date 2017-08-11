@@ -303,8 +303,8 @@ function openSite(request , response){
     		    seTup(result);
           }else{
             //Beaconin ryhmä sama päivitetään sivu samoilla arvoilla kuin viimeksi
-            vastaa();*/
-          }
+            vastaa();
+          }*/
         }else{
           //Beaconstatus null asetetaan se Beaconin ryhmä arvoksi
           if(key == 32109){
