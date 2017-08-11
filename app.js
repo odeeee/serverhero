@@ -19,6 +19,7 @@ app.get('/', function(req, res){
 	console.log('page loaded');
 });
 
+// Asetetaan portti jota kuunnellaan
 var port = process.env.PORT || 8000;
 
 app.listen(port , function(){
@@ -54,14 +55,14 @@ setInterval(function () {
 }, 5000);
 //Tulostaa taulukot vstable2 ja ostable
 function databTulostus(){
-	connection.query('SELECT * from vstable2', function(err, rows, fields) {
+	connection.query('SELECT * from vstable2', function(err, rows, fields) { //vstable2  sisältää ryhmatunnuksen joka on key sekä ryhman viestin
   		if (!err)
     		console.log('vstable2:  \nThe solution is: ', rows);
   		else
     		console.log('Error while performing Query. ');
 	});
 
-	connection.query('SELECT * from ostable', function(err, rows, fields) {
+	connection.query('SELECT * from ostable', function(err, rows, fields) { //ostable sisältää rtunnuksen, beaconin major arvon, paikkakunnan säätietoja varten sekä viestin
   		if (!err)
     		console.log('\n\nostable: \nThe solution is: ', rows);
   		else
@@ -89,6 +90,7 @@ function sendStuff(request , response) {
 	response.send(naytot);
 	console.log('sendStuff loaded');
 }
+
 //Url johon Android yhdistää jos ei samalla päivitä viestiä https://oven-sausage.herokuapp.com/add/1/BEACONIN_MAJOR/RYHMÄTUNNUS/KAUPUNKI
 app.get('/add/1/:beacon/:ryhma/:saa', addInfo);
 
@@ -238,26 +240,17 @@ function tallennaViesti(request , response){
 var beaconStatus = {
   "beacon1":
     { "major":"32109",
-      "ryhma":"TVT15SMO"
+      "ryhma":"DEF14ULT"
     },
   "beacon2":  
     { "major":"60020",
-      "ryhma":"TVT15SPL"
+      "ryhma":"DEF14ULT"
     },
   "beacon3": 
     { "major":"18494",
-      "ryhma":"TVT15SMO"
+      "ryhma":"DEF14ULT"
     }
 }
-/*
-var beaconStatus2 = {
-  "32109":"TVT15SMO",
-  "18494":"TVT15SPL",
-  "60020":"TVT15SMO"
-}
-var asdasd = "32109";
-var asd = beaconStatus2.asdasd;
-console.log(asd);*/
 
 function getRyhmaWithMajor(major) {
   return data.filter(
@@ -304,12 +297,13 @@ function openSite(request , response){
         //testataan onko Beaconin ryhmä vaihtunut viimekerrasta
         ryhma = result[0].Ryhma;
         if(ryhma != "null"){
-          if(ryhma != ryhmaSta){
+          seTup(result);
+          /*if(ryhma != ryhmaSta){
             //Beaconin ryhmä arvo vaihtunut päivitetään tiedot 
     		    seTup(result);
           }else{
             //Beaconin ryhmä sama päivitetään sivu samoilla arvoilla kuin viimeksi
-            vastaa();
+            vastaa();*/
           }
         }else{
           //Beaconstatus null asetetaan se Beaconin ryhmä arvoksi
@@ -393,7 +387,7 @@ function openSite(request , response){
       res.on('end', function(){
         var ruokaLista = JSON.parse(body);
         ruoka = ruokaLista.MenusForDays;
-        if(typeof ruoka !== 'undefined' && ruoka.length > 0){
+        if(typeof ruoka !== 'undefined' && ruoka.length > 0){ //Ruokalista on array ja tässä tarkistetaan että se ei ole tyhjä
           console.log("Ruokana tänään: ",ruoka);
           vastaa();
         }else{
@@ -412,9 +406,9 @@ function openSite(request , response){
   	 ryhma: ryhma,
   	 saa: saa,
   	 viesti: viesti,
-      keli: keli,
-      ruoka: ruoka,
-      saaId: iconId
+     keli: keli,
+     ruoka: ruoka,
+     saaId: iconId
     });
     console.log("Vastattu");
     //Asetetaan BeaconStatuksen	ryhma arvo.
